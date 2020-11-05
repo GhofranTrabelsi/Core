@@ -1,0 +1,490 @@
+#################################################################
+
+#                                                            L O C A L              V A R I A B L E S                                                               #
+
+#################################################################
+
+import os ;
+
+import common ;
+
+ 
+
+local GL_ROOT = [ gl-root ] ;  
+
+local GL_OS_TAG = [ gl-os-tag ] ;
+
+local APLIB_PATH = [ os.environ APLIB_PATH ] ;
+
+local SLEV5VERSION = [ os.environ SLEV5VERSION ] ;
+
+local DELIVERYLIB_PATH = [ os.environ DELIVERYLIB_PATH ] ;
+
+ 
+
+#################################################################
+
+#                                                                                            J A M R O O T                                                                                                   #
+
+#################################################################
+
+ 
+
+switch [ os.environ FORTIFY_BUILD ]
+
+{
+
+  case 1 :
+
+
+                project slev5idemsola
+
+                               : requirements
+
+                  
+
+                               <linkflags>"-lz  -L."  
+
+                               <define>XERCES_TMPLSINC   
+
+                               <define>ALGOID_MANAGER_LL=1  
+
+                               <define>NOUNCRYPT  
+
+                               <cxxflags>"-fPIC"
+
+                               <toolset>sun:<stdlib>sun-stlport
+
+                               <toolset>sun:<cxxflags>" -KPIC -DBOOST_LIB_DIAGNOSTIC=1 -Qoption ccfe -complextmplexp -D_XOPEN_SOURCE=1 -D_RWSTD_ALLOCATOR -D_XOPEN_SOURCE_EXTENDED=1 -D__EXTENSIONS__ -DBOOST_ASIO_DISABLE_FENCED_BLOCK -DBOOST_NO_IOSTREAM"
+
+                               <toolset>gcc:<cxxflags>-fno-strict-aliasing
+
+                               ;
+
+ 
+
+  case * :
+
+                               local GT_BOOST_OS    = [ gt-boost-os ] ;
+
+                               local GT_OS_END      = [ gt-os-endianess ] ;
+
+ 
+
+                               project slev5idemsola
+
+                               : requirements
+
+                    <define>$(GT_OS_END)
+
+                               <linkflags>"-lz  -L."  
+
+                               <define>XERCES_TMPLSINC   
+
+                               <define>ALGOID_MANAGER_LL=1  
+
+                               <define>NOUNCRYPT  
+
+                               <cxxflags>"-fPIC"
+
+                               <toolset>sun:<stdlib>sun-stlport
+
+                               <toolset>sun:<cxxflags>" -KPIC -DBOOST_LIB_DIAGNOSTIC=1 -Qoption ccfe -complextmplexp -D_XOPEN_SOURCE=1 -D_RWSTD_ALLOCATOR -D_XOPEN_SOURCE_EXTENDED=1 -D__EXTENSIONS__ -DBOOST_ASIO_DISABLE_FENCED_BLOCK -DBOOST_NO_IOSTREAM"
+
+                               <toolset>gcc:<cxxflags>-fno-strict-aliasing
+
+                               ;
+
+ 
+
+}
+
+ 
+
+ 
+
+#################################################################
+
+#                        T A R G E T    S                            #
+
+#################################################################
+
+path-constant TOP_LOCAL         : . ;
+
+path-constant /libssh           : $(TOP_LOCAL)/lib/libssh ;
+
+path-constant /libunzip         : $(TOP_LOCAL)/lib/libunzip ;
+
+path-constant /mdi              : $(TOP_LOCAL)/lib/eurexmdi ;
+
+path-constant SKELETON_PATH               : skeleton_ll ;
+
+path-constant BOOST_PATH                      : $(GL_ROOT)/boostlibs/1.53.0.2 ;
+
+path-constant BOOST_PATH_INC            : $(BOOST_PATH)/include ;
+
+                              
+
+#################################################################
+
+#                                                            L I B R A R I E S  P A T H                                                                                #
+
+#################################################################
+
+use-project /system                                                                     : $(GL_ROOT)/system ;
+
+use-project /used_aplib                                                              : $(APLIB_PATH) ;
+
+use-project /used_build_info                    : $(GL_ROOT)/build_info/1.0.2 ;
+
+use-project /used_boost                                     : $(BOOST_PATH) ;
+
+                              
+
+path-constant /path_aplib                                          : $(APLIB_PATH)/lib ;
+
+ 
+
+switch [ os.environ FORTIFY_BUILD ]
+
+{
+
+  case 1 :
+
+                lib glvirtualap : : <file>$(DELIVERYLIB_PATH)/lib/libglvirtualap-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib glmql                                              : : <file>$(DELIVERYLIB_PATH)/lib/glmql_lin_rh6_threads_opt_64bits.a ;
+
+                                                               lib infra_libcrypto : : <file>$(DELIVERYLIB_PATH)/lib/infra_libcrypto_lin_rh6_threads_opt_64bits.a ;
+
+                                                               lib infra_libssl    : : <file>$(DELIVERYLIB_PATH)/lib/infra_libssl_lin_rh6_threads_opt_64bits.a ;
+
+                                                               lib glapi                                               : : <file>$(DELIVERYLIB_PATH)/lib/libglapi-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib glcodage                       : : <file>$(DELIVERYLIB_PATH)/lib/libglcodage-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib gldata                                             : : <file>$(DELIVERYLIB_PATH)/lib/libgldata-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib glencoderv5                : : <file>$(DELIVERYLIB_PATH)/lib/libglencoderv5-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib gllib                                 : : <file>$(DELIVERYLIB_PATH)/lib/libgllib-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib glslerecord   : : <file>$(DELIVERYLIB_PATH)/lib/libglslerecord-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib gltimer                           : : <file>$(DELIVERYLIB_PATH)/lib/libgltimer-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib gltools                            : : <file>$(DELIVERYLIB_PATH)/lib/libgltools-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib gltypes                           : : <file>$(DELIVERYLIB_PATH)/lib/libgltypes-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib kernelsle                       : : <file>$(DELIVERYLIB_PATH)/lib/libkernelsle-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib sclib                                                : : <file>$(DELIVERYLIB_PATH)/lib/libsclib-linux-x86-64-gcc44-mt-speed.a ;
+
+                                                               lib skeleton                       : : <file>$(DELIVERYLIB_PATH)/lib/libskeleton_ll-linux-x86-64-gcc44-mt-speed.a ;        
+
+                                                               lib md5                                                : : <file>$(DELIVERYLIB_PATH)/lib/libmd5_ll.a ;
+
+  case * :
+
+                                                               alias skeleton                   : ;
+
+                                                               alias glvirtualap                : ;
+
+                                                               alias glmql                          : ;
+
+                                                               alias infra_libcrypto : ;
+
+                                                               alias infra_libssl               : ;
+
+                                                               alias glapi                           :  ;
+
+                                                               alias glcodage                   : ;
+
+                                                               alias gldata                         : ;
+
+                                                               alias glencoderv5            : ;
+
+                                                               alias gllib                             : ;
+
+                                                               alias glslerecord               : ;
+
+                                                               alias gltimer                       : ;
+
+                                                               alias gltools                        : ;
+
+                                                               alias gltypes                       : ;
+
+                                                               alias kernelsle   : ;
+
+                                                               alias sclib                            : ;
+
+                                                               alias md5                                : ;
+
+}
+
+ 
+
+#####################################################################
+
+#                                                            COMPILATION ALIASES                             #
+
+#####################################################################
+
+alias buildinfo                                                                                                  : /used_build_info//build_info ;
+
+#################################################################
+
+#                                                            TARGETS                                                                                                               #
+
+#################################################################
+
+ 
+
+ 
+
+rule sgt-tag-local ( name : type ? : property-set )
+
+{
+
+     if $(type) in EXE SHARED_LIB IMPORT_LIB STATIC_LIB STRIPPED_EXE STRIPPED_LIB {
+
+            local other-name = [ $(property-set).get <target-name> ] ;
+
+      if $(other-name) {
+
+        name = $(other-name) ;
+
+      }
+
+            local address-model = [ $(property-set).get <address-model> ] ;
+
+                  if ! $(address-model) {
+
+                           exit Not address-model option found for $(type) $(name) ;
+
+      }
+
+                  return [ common.format-name
+
+           <base>  <property:target-os> <property:architecture> <address-model> <toolset>
+
+                           <threading> <runtime> <property:optimization> _low <property:dbset>
+
+                           <property:dbset-.*:version>
+
+         : $(name) : $(type) : $(property-set) ] ;
+
+    }
+
+}
+
+ 
+
+ 
+
+ 
+
+sts-module slev5idemsola_fortify :
+
+                               [ glob src/*.cpp ]
+
+                               [ glob lib/idem/src/*.cpp ]
+
+                               [ glob lib/slev5sail/src/*.cpp ]
+
+                               [ glob lib/sail/src/*.cpp ]
+
+                               md5
+
+                               glvirtualap         
+
+                               glmql                                   
+
+                               infra_libcrypto
+
+                               infra_libssl         
+
+                               glapi                                     
+
+                               glcodage                            
+
+                               gldata                                  
+
+                               glencoderv5      
+
+                               gllib                                      
+
+                               glslerecord         
+
+                               gltimer                
+
+                               gltools                 
+
+                               gltypes                
+
+                               kernelsle                            
+
+                               sclib                                     
+
+                               buildinfo
+
+                               /used_boost//boostlibs
+
+                               /system
+
+                               skeleton
+
+                               :           
+
+                               <include>$(TOP_LOCAL)/inc
+
+                               <include>$(TOP_LOCAL)/lib/idem/inc
+
+                               <include>$(TOP_LOCAL)/lib/slev5sail/inc
+
+                               <include>$(TOP_LOCAL)/lib/sail/inc
+
+                               <include>$(TOP_LOCAL)/lib/md5/inc
+
+                               <include>/sr/gldev/shrdlibs/intel/tbb/2019_U5/include/
+
+                               <include>/sr/gldev/shrdlibs/infra/openssl/0.9.8g/
+
+                               <include>$(SKELETON_PATH)/inc
+
+                               <include>./lib/other
+
+                               <include>$(GL_ROOT)/infra/warnings/1.0.1.1
+
+                               <include>$(BOOST_PATH_INC)
+
+                               <include>$(/path_aplib)/glapi/inc
+
+                               <include>$(/path_aplib)/glcnxmanager/inc
+
+                               <include>$(/path_aplib)/glcodage/inc
+
+                               <include>$(/path_aplib)/gldata/inc
+
+                               <include>$(/path_aplib)/glencoder29xx/inc
+
+                               <include>$(/path_aplib)/glencodergen/inc
+
+                               <include>$(/path_aplib)/glencoderv5/inc
+
+                               <include>$(/path_aplib)/gleventmgr/inc
+
+                               <include>$(/path_aplib)/gllib/inc
+
+                               <include>$(/path_aplib)/glmql/inc
+
+                               <include>$(/path_aplib)/glslerecord/inc
+
+                               <include>$(/path_aplib)/gltimer/inc
+
+                               <include>$(/path_aplib)/gltools/inc
+
+                               <include>$(/path_aplib)/gltypes/inc
+
+                               <include>$(/path_aplib)/glvirtualap/inc
+
+                               <include>$(/path_aplib)/kernelsle/inc
+
+                               <include>$(GL_ROOT)/sclib/10.23.0
+
+                               <include>$(/path_aplib)/../inc
+
+                               <tag>@sgt-tag-local
+
+                               <optimization>speed
+
+                               ;
+
+ 
+
+ 
+
+sts-module slev5idemsola_low :
+
+                               [ glob src/*.cpp ]
+
+                               [ glob lib/idem/src/*.cpp ]
+
+                               [ glob lib/slev5sail/src/*.cpp ]
+
+                               [ glob lib/sail/src/*.cpp ]
+
+                               [ glob lib/md5/src/*.cpp ]
+
+                               [ glob $(SKELETON_PATH)/src/*.cpp ]
+
+                               /used_aplib//glvirtualap
+
+                               /used_build_info//build_info
+
+                               /used_boost//boostlibs
+
+                               /system
+
+                               :           
+
+                               <include>$(TOP_LOCAL)/inc
+
+                               <include>$(TOP_LOCAL)/lib/idem/inc
+
+                               <include>$(TOP_LOCAL)/lib/slev5sail/inc
+
+                               <include>$(TOP_LOCAL)/lib/sail/inc
+
+                               <include>$(TOP_LOCAL)/lib/md5/inc
+
+                               <include>$(SKELETON_PATH)/inc
+
+                               <include>./lib/other
+
+                               <include>$(GL_ROOT)/infra/warnings/1.0.1.1
+
+                               <include>$(BOOST_PATH_INC)
+
+                               <tag>@sgt-tag-local
+
+                               <optimization>speed
+
+                               ;
+
+ 
+
+sts-module slev5idemsola_cov :
+
+                               [ glob src/*.cpp ]
+
+                               [ glob lib/idem/src/*.cpp ]
+
+                               [ glob lib/slev5sail/src/*.cpp ]
+
+                               [ glob lib/sail/src/*.cpp ]
+
+                               [ glob lib/md5/src/*.cpp ]
+
+                               [ glob $(SKELETON_PATH)/src/*.cpp ]
+
+                               /used_aplib//glvirtualap
+
+                               /used_build_info//build_info
+
+                               /used_boost//boostlibs
+
+                               /system
+
+ 
+
+                               :           
+
+                               <include>$(TOP_LOCAL)/inc
+
+                               <include>$(TOP_LOCAL)/lib/idem/inc
+
+<span
+
+…
